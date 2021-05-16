@@ -40,7 +40,7 @@ public class BMMBulkScorer extends BulkScorer {
 
   @Override
   public int score(LeafCollector collector, Bits acceptDocs, int min, int max) throws IOException {
-    DocIdSetIterator iterator = bmmScorer.iterator() ;
+    DocIdSetIterator iterator = bmmScorer.iterator();
     collector.setScorer(bmmScorer);
     int doc = bmmScorer.docID();
     if (doc < min) {
@@ -98,17 +98,17 @@ class BlockMaxMaxscoreScorer extends Scorer {
    * @param scoreMode The scoreMode
    */
   BlockMaxMaxscoreScorer(Weight weight, List<Scorer> scorers, ScoreMode scoreMode)
-          throws IOException {
+      throws IOException {
     super(weight);
     assert scoreMode == ScoreMode.TOP_SCORES;
 
     this.scoreMode = scoreMode;
     this.doc = -1;
     this.cost =
-            costWithMinShouldMatch(
-                    scorers.stream().map(Scorer::iterator).mapToLong(DocIdSetIterator::cost),
-                    scorers.size(),
-                    1);
+        costWithMinShouldMatch(
+            scorers.stream().map(Scorer::iterator).mapToLong(DocIdSetIterator::cost),
+            scorers.size(),
+            1);
 
     essentialsScorers = new DisiPriorityQueue(scorers.size());
     nonEssentialScorers = new ArrayList<>(scorers.size());
@@ -297,7 +297,7 @@ class BlockMaxMaxscoreScorer extends Scorer {
   @Override
   public void setMinCompetitiveScore(float minScore) throws IOException {
     assert scoreMode == ScoreMode.TOP_SCORES
-            : "minCompetitiveScore can only be set for ScoreMode.TOP_SCORES, but got: " + scoreMode;
+        : "minCompetitiveScore can only be set for ScoreMode.TOP_SCORES, but got: " + scoreMode;
     assert minScore >= 0;
     long scaledMinScore = WANDScorer.scaleMinScore(minScore, scalingFactor);
     // minScore increases monotonically
