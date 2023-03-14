@@ -193,6 +193,21 @@ public class SparseFixedBitSet extends BitSet {
     }
   }
 
+  @Override
+  public void set(int startIndex, int endIndex) {
+    assert startIndex >= 0 && startIndex < length
+        : "startIndex=" + startIndex + ", length=" + length;
+    assert endIndex >= 0 && endIndex <= length : "endIndex=" + endIndex + ", length=" + length;
+
+    if (endIndex <= startIndex) {
+      return;
+    }
+
+    for (int i = startIndex; i < endIndex; i++) {
+      set(i);
+    }
+  }
+
   private void insertBlock(int i4096, long i64bit, int i) {
     indices[i4096] = i64bit;
     assert bits[i4096] == null;

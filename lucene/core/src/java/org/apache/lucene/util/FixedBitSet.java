@@ -531,6 +531,7 @@ public final class FixedBitSet extends BitSet {
    * @param startIndex lower index
    * @param endIndex one-past the last bit to set
    */
+  @Override
   public void set(int startIndex, int endIndex) {
     assert startIndex >= 0 && startIndex < numBits
         : "startIndex=" + startIndex + ", numBits=" + numBits;
