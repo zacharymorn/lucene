@@ -425,6 +425,7 @@ public final class Lucene90PostingsReader extends PostingsReaderBase {
       }
 
       doc = -1;
+      lastNonMatchingDoc = doc;
       this.needsFreq = PostingsEnum.featureRequested(flags, PostingsEnum.FREQS);
       this.isFreqsRead = true;
       if (indexHasFreq == false || needsFreq == false) {

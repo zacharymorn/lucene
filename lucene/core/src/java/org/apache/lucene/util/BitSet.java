@@ -46,6 +46,9 @@ public abstract class BitSet implements Bits, Accountable {
   /** Set the bit at <code>i</code>. */
   public abstract void set(int i);
 
+  /** Set the bits from <code>start (inclusive)</code> to <code>finish (exclusive)</code> */
+  public abstract void set(int startIndex, int endIndex);
+
   /** Set the bit at <code>i</code>, returning <code>true</code> if it was previously set. */
   public abstract boolean getAndSet(int i);
 
@@ -98,7 +101,19 @@ public abstract class BitSet implements Bits, Accountable {
   public void or(DocIdSetIterator iter) throws IOException {
     checkUnpositioned(iter);
     for (int doc = iter.nextDoc(); doc != DocIdSetIterator.NO_MORE_DOCS; doc = iter.nextDoc()) {
-      set(doc);
+      int nextPossibleNonMatchingDocID = iter.peekNextNonMatchingDocID();
+      if (nextPossibleNonMatchingDocID == DocIdSetIterator.NO_MORE_DOCS) {
+        set(doc, length());
+        return;
+      }
+      if (nextPossibleNonMatchingDocID == doc + 1) {
+        set(doc);
+      } else {
+        set(doc, nextPossibleNonMatchingDocID);
+        if (iter.advance(nextPossibleNonMatchingDocID - 1) == DocIdSetIterator.NO_MORE_DOCS) {
+          return;
+        }
+      }
     }
   }
 }

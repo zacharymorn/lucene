@@ -279,6 +279,11 @@ public abstract class BaseBitSetTestCase<T extends BitSet> extends LuceneTestCas
     }
 
     @Override
+    public void set(int startIndex, int endIndex) {
+      bitSet.set(startIndex, endIndex);
+    }
+
+    @Override
     public void clear(int startIndex, int endIndex) {
       if (startIndex >= endIndex) {
         return;
